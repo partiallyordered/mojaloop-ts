@@ -1,6 +1,7 @@
 import { protocol } from 'mojaloop-voodoo-client';
 import { OptionsOfJSONResponseBody, Response } from 'got';
-import { Merge } from 'type-fest';
+type Except<ObjectType, KeysType extends keyof ObjectType> = Pick<ObjectType, Exclude<keyof ObjectType, KeysType>>;
+type Merge<FirstType, SecondType> = Except<FirstType, Extract<keyof FirstType, keyof SecondType>> & SecondType;
 
 export function serialize(body: any): string {
   return JSON.stringify(body);
