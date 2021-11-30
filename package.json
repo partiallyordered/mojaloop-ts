@@ -1,0 +1,21 @@
+{
+  "name": "mojaloop-ts",
+  "version": "0.1.0",
+  "description": "A Mojaloop admin API client in Typescript",
+  "main": "dist/index.js",
+  "dependencies": {
+    "got": "^11.8.3",
+    "mojaloop-voodoo-client": "^0.11.1",
+    "type-fest": "^2.6.0",
+    "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "compile": "tsc --noemit"
+  },
+  "author": "matt.kingston@modusbox.com",
+  "devDependencies": {
+    "tslint": "^6.1.3",
+    "typescript": "^4.3.5"
+  }
+}
