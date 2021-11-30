@@ -64,19 +64,24 @@ export async function getParticipantsLimits(
 export async function getParticipantAccounts(
   basePath: string,
   participant: FspName,
-  opts: Options,
-): Promise<MlApiResponse<AccountWithPosition[]>>;
+): Promise<AccountWithPosition[]>;
 
 export async function getParticipantAccounts(
   basePath: string,
   participant: FspName,
-  opts: Options,
+  opts: OptionsOfThrowMlError,
 ): Promise<AccountWithPosition[]>;
 
 export async function getParticipantAccounts(
   basePath: string,
   participant: FspName,
   opts: Options,
+): Promise<MlApiResponse<AccountWithPosition[]>>;
+
+export async function getParticipantAccounts(
+  basePath: string,
+  participant: FspName,
+  opts: OptionsOfThrowMlError | Options = defaultOpts,
 ): Promise<AccountWithPosition[] | MlApiResponse<AccountWithPosition[]>> {
   const allOpts = handleOptions(opts);
   const result = await got.get<AccountWithPosition[]>(`${basePath}/participants/${participant}/accounts`, REQUEST_OPTS);
