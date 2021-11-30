@@ -8,6 +8,7 @@ export import DateTime = protocol.DateTime;
 export import Settlement = protocol.Settlement;
 export import ErrorResponse = protocol.ErrorResponse;
 export import SettlementWindow = protocol.SettlementWindow;
+export import SettlementSettlementWindow = protocol.SettlementSettlementWindow;
 export import SettlementWindowState = protocol.SettlementWindowState;
 export import SettlementId = protocol.SettlementId;
 
@@ -66,20 +67,12 @@ export interface SettlementParticipantAccount {
   netSettlementAmount: NetSettlementAmount;
 }
 
+// TODO: This needs to be reconciled with SettlementParticipant in mojaloop-voodoo-client. In
+// particular, the type in mojaloop-voodoo-client should probably be called
+// SettlementParticipantAccount instead of SettlementAccount
 export interface SettlementParticipant {
   id: number;
   accounts: SettlementParticipantAccount[];
-}
-
-export interface Adjustment {
-  participant: LedgerParticipant;
-  amount: number;
-  settlementBankBalance: number;
-  positionAccount: AccountWithPosition;
-  settlementAccount: AccountWithPosition;
-  currentLimit: Limit;
-  settlementParticipantAccount: SettlementParticipantAccount;
-  settlementParticipant: SettlementParticipant;
 }
 
 export interface LedgerParticipant {
@@ -109,6 +102,7 @@ export interface LedgerParticipant {
   accounts: LedgerAccount[];
 }
 
+// TODO: this should be pushed upstream into mojaloop-voodoo-client
 export type Currency =
   | 'AED'
   | 'AFN'
