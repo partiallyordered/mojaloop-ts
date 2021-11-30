@@ -49,6 +49,12 @@ export interface Limit {
   alarmPercentage: number;
 }
 
+export interface ParticipantLimit {
+  name: FspName;
+  currency: Currency;
+  limit: Limit;
+}
+
 // TODO: upstream this? Is it better as an enum, or a union?
 export enum SettlementStatus {
   PendingSettlement = 'PENDING_SETTLEMENT',

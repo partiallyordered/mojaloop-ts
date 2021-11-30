@@ -8,7 +8,7 @@ import {
   handleOptions,
   handleResult,
 } from './shared';
-import { LedgerParticipant, Limit } from './types';
+import { LedgerParticipant, ParticipantLimit } from './types';
 
 export async function getParticipants(
   basePath: string,
@@ -35,25 +35,25 @@ export async function getParticipants(
 
 export async function getParticipantsLimits(
   basePath: string,
-): Promise<Limit[]>;
+): Promise<ParticipantLimit[]>;
 
 export async function getParticipantsLimits(
   basePath: string,
   opts: OptionsOfThrowMlError,
-): Promise<Limit[]>;
+): Promise<ParticipantLimit[]>;
 
 export async function getParticipantsLimits(
   basePath: string,
   opts: Options,
-): Promise<MlApiResponse<Limit[]>>;
+): Promise<MlApiResponse<ParticipantLimit[]>>;
 
 export async function getParticipantsLimits(
   basePath: string,
   opts: OptionsOfThrowMlError | Options = defaultOpts,
-): Promise<Limit[] | MlApiResponse<Limit[]>> {
+): Promise<ParticipantLimit[] | MlApiResponse<ParticipantLimit[]>> {
   const allOpts = handleOptions(opts);
-  const result = await got.get<Limit[]>(`${basePath}/participants/limits`, REQUEST_OPTS);
-  return handleResult<Limit[]>(result, allOpts.throwMlError);
+  const result = await got.get<ParticipantLimit[]>(`${basePath}/participants/limits`, REQUEST_OPTS);
+  return handleResult<ParticipantLimit[]>(result, allOpts.throwMlError);
 }
 
 export default {
