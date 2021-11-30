@@ -12,7 +12,7 @@ export {
 } from './shared';
 import * as types from './types';
 
-export default {
+export {
   types,
   ledger,
   settlement,
