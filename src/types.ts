@@ -5,7 +5,6 @@ export import SettlementWindowId = protocol.SettlementWindowId;
 export import ParticipantCurrencyId = protocol.ParticipantCurrencyId;
 export import SettlementState = protocol.SettlementState;
 export import DateTime = protocol.DateTime;
-export import Settlement = protocol.Settlement;
 export import ErrorResponse = protocol.ErrorResponse;
 export import SettlementWindow = protocol.SettlementWindow;
 export import SettlementSettlementWindow = protocol.SettlementSettlementWindow;
@@ -49,6 +48,7 @@ export interface Limit {
   alarmPercentage: number;
 }
 
+// TODO: upstream this? Is it better as an enum, or a union?
 export enum SettlementStatus {
   PendingSettlement = 'PENDING_SETTLEMENT',
   PsTransfersRecorded = 'PS_TRANSFERS_RECORDED',
@@ -57,6 +57,13 @@ export enum SettlementStatus {
   Settling = 'SETTLING',
   Settled = 'SETTLED',
   Aborted = 'ABORTED',
+}
+
+// TODO upstream this. Carefully. This was written with speed in mind, not accuracy. Are these
+// properties definitely present in the spec?
+export interface Settlement extends protocol.Settlement {
+  reason: string;
+  state: SettlementStatus;
 }
 
 export interface NetSettlementAmount {
