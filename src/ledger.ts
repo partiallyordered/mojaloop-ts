@@ -8,7 +8,12 @@ import {
   handleOptions,
   handleResult,
 } from './shared';
-import { LedgerParticipant, ParticipantLimit } from './types';
+import {
+  LedgerParticipant,
+  ParticipantLimit,
+  AccountWithPosition,
+  FspName,
+} from './types';
 
 export async function getParticipants(
   basePath: string,
@@ -56,7 +61,30 @@ export async function getParticipantsLimits(
   return handleResult<ParticipantLimit[]>(result, allOpts.throwMlError);
 }
 
+export async function getParticipantAccounts(
+  basePath: string,
+  participant: FspName,
+  opts: Options,
+): Promise<MlApiResponse<AccountWithPosition[]>>;
+
+export async function getParticipantAccounts(
+  basePath: string,
+  participant: FspName,
+  opts: Options,
+): Promise<AccountWithPosition[]>;
+
+export async function getParticipantAccounts(
+  basePath: string,
+  participant: FspName,
+  opts: Options,
+): Promise<AccountWithPosition[] | MlApiResponse<AccountWithPosition[]>> {
+  const allOpts = handleOptions(opts);
+  const result = await got.get<AccountWithPosition[]>(`${basePath}/participants/${participant}/accounts`, REQUEST_OPTS);
+  return handleResult<AccountWithPosition[]>(result, allOpts.throwMlError);
+}
+
 export default {
   getParticipants,
   getParticipantsLimits,
+  getParticipantAccounts,
 }
