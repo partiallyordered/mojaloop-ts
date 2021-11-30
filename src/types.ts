@@ -65,7 +65,7 @@ export enum SettlementStatus {
 export declare type Settlement = Merge<protocol.Settlement, {
   reason: string;
   state: SettlementStatus;
-  participants: SettlementParticipant;
+  participants: SettlementParticipant[];
 }>;
 
 export interface NetSettlementAmount {
