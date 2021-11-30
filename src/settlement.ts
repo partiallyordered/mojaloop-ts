@@ -61,6 +61,11 @@ type GetSettlementsRequest =
 export async function getSettlements(
   basePath: string,
   query: GetSettlementsRequest,
+): Promise<Settlement[]>;
+
+export async function getSettlements(
+  basePath: string,
+  query: GetSettlementsRequest,
   opts?: OptionsOfThrowMlError,
 ): Promise<Settlement[]>;
 
@@ -115,6 +120,12 @@ export async function closeSettlementWindow(
   basePath: string,
   id: SettlementWindowId,
   reason: string,
+): Promise<SettlementWindow>;
+
+export async function closeSettlementWindow(
+  basePath: string,
+  id: SettlementWindowId,
+  reason: string,
   opts?: OptionsOfThrowMlError,
 ): Promise<SettlementWindow>;
 
@@ -149,6 +160,11 @@ export interface CreateSettlementRequestBody {
   reason: string;
   settlementWindows: { id: SettlementWindowId }[];
 }
+
+export async function createSettlement(
+  basePath: string,
+  body: CreateSettlementRequestBody,
+): Promise<Settlement>;
 
 export async function createSettlement(
   basePath: string,
@@ -195,6 +211,11 @@ export type GetSettlementWindowsRequest =
   | SettlementWindowsQueryStateRequired
   | SettlementWindowsQueryFromDateTimeRequired
   | SettlementWindowsQueryToDateTimeRequired
+
+export async function getSettlementWindows(
+  basePath: string,
+  query: GetSettlementWindowsRequest,
+): Promise<SettlementWindow[]>;
 
 export async function getSettlementWindows(
   basePath: string,
@@ -252,6 +273,11 @@ export async function getSettlementWindows(
 export async function getSettlementWindow(
   basePath: string,
   id: SettlementWindowId,
+): Promise<SettlementWindow>;
+
+export async function getSettlementWindow(
+  basePath: string,
+  id: SettlementWindowId,
   opts?: OptionsOfThrowMlError,
 ): Promise<SettlementWindow>;
 
@@ -277,13 +303,18 @@ export async function getSettlementWindow(
 export async function getSettlement(
   basePath: string,
   id: SettlementId,
-  opts?: OptionsOfThrowMlError,
 ): Promise<Settlement>;
 
 export async function getSettlement(
   basePath: string,
   id: SettlementId,
-  opts?: Options,
+  opts: OptionsOfThrowMlError,
+): Promise<Settlement>;
+
+export async function getSettlement(
+  basePath: string,
+  id: SettlementId,
+  opts: Options,
 ): Promise<MlApiResponse<Settlement>>;
 
 export async function getSettlement(

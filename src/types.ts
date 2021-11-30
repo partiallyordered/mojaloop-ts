@@ -22,6 +22,14 @@ export interface CurrencyData {
   minorUnit: MinorUnit;
 }
 
+export interface LedgerParticipant {
+  name: FspName;
+  id: string;
+  created: string; // This is an annoyingly nested json string. I.e. { "created": "\"2021-08-20T08:27:30.000Z\"" }
+  isActive: IsActive;
+  accounts: LedgerAccount[];
+}
+
 export type LedgerAccountType = 'INTERCHANGE_FEE' | 'POSITION' | 'SETTLEMENT';
 
 export type FspId = number;
@@ -33,10 +41,6 @@ export interface LedgerAccount {
   ledgerAccountType: LedgerAccountType;
   currency: Currency;
   isActive: IsActive;
-}
-
-export interface AccountWithPosition extends LedgerAccount {
-  value: number;
 }
 
 export interface Limit {
@@ -75,31 +79,8 @@ export interface SettlementParticipant {
   accounts: SettlementParticipantAccount[];
 }
 
-export interface LedgerParticipant {
-  name: FspName;
-  id: string;
-  created: string; // This is an annoyingly nested json string. I.e. { "created": "\"2021-08-20T08:27:30.000Z\"" }
-  isActive: IsActive;
-  accounts: LedgerAccount[];
-}
-
-export interface LedgerAccount {
-  id: AccountId;
-  ledgerAccountType: LedgerAccountType;
-  currency: Currency;
-  isActive: IsActive;
-}
-
 export interface AccountWithPosition extends LedgerAccount {
   value: number;
-}
-
-export interface LedgerParticipant {
-  name: FspName;
-  id: string;
-  created: string; // This is an annoyingly nested json string. I.e. { "created": "\"2021-08-20T08:27:30.000Z\"" }
-  isActive: IsActive;
-  accounts: LedgerAccount[];
 }
 
 // TODO: this should be pushed upstream into mojaloop-voodoo-client
