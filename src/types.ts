@@ -1,4 +1,5 @@
 import { protocol } from 'mojaloop-voodoo-client';
+import { Merge } from 'type-fest';
 
 export import ParticipantId = protocol.ParticipantId;
 export import SettlementWindowId = protocol.SettlementWindowId;
@@ -61,10 +62,11 @@ export enum SettlementStatus {
 
 // TODO upstream this. Carefully. This was written with speed in mind, not accuracy. Are these
 // properties definitely present in the spec?
-export interface Settlement extends protocol.Settlement {
+export declare type Settlement = Merge<protocol.Settlement, {
   reason: string;
   state: SettlementStatus;
-}
+  participants: SettlementParticipant;
+}>;
 
 export interface NetSettlementAmount {
   amount: number;
@@ -72,7 +74,7 @@ export interface NetSettlementAmount {
 }
 
 export interface SettlementParticipantAccount {
-  id: number;
+  id: ParticipantCurrencyId;
   state: SettlementStatus;
   reason: string;
   netSettlementAmount: NetSettlementAmount;
