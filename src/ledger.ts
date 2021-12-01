@@ -10,6 +10,7 @@ import {
   serialize,
 } from './shared';
 import {
+  AccountId,
   LedgerParticipant,
   ParticipantLimit,
   AccountWithPosition,
@@ -18,6 +19,9 @@ import {
   Limit,
 } from './types';
 import { strict as assert } from 'assert';
+import { v4 as uuidv4 } from 'uuid';
+
+type UUIDv4 = typeof uuidv4;
 
 export async function getParticipants(
   basePath: string,
@@ -175,6 +179,56 @@ export async function postInitialPositionAndLimits(
   return handleResult<null>(apiResult, allOpts.throwMlError);
 }
 
+export type FundsInOutAction = 'recordFundsIn' | 'recordFundsOutPrepareReserve' | 'recordFundsOutCommit';
+export interface FundsInOutRequest {
+  externalReference: string;
+  action: FundsInOutAction;
+  reason: string;
+  amount: {
+    amount: number;
+    currency: Currency;
+  };
+  transferId: UUIDv4;
+}
+
+export async function fundsInOut(
+  basePath: string,
+  participant: FspName,
+  account: AccountId,
+  request: FundsInOutRequest,
+): Promise<null>;
+
+export async function fundsInOut(
+  basePath: string,
+  participant: FspName,
+  account: AccountId,
+  request: FundsInOutRequest,
+  opts: OptionsOfThrowMlError,
+): Promise<null>;
+
+export async function fundsInOut(
+  basePath: string,
+  participant: FspName,
+  account: AccountId,
+  request: FundsInOutRequest,
+  opts: Options,
+): Promise<MlApiResponse<null>>;
+
+export async function fundsInOut(
+  basePath: string,
+  participant: FspName,
+  account: AccountId,
+  request: FundsInOutRequest,
+  opts: OptionsOfThrowMlError | Options = defaultOpts,
+): Promise<null | MlApiResponse<null>> {
+  const allOpts = handleOptions(opts);
+  const requestOpts: OptionsOfJSONResponseBody = {
+    ...REQUEST_OPTS,
+    body: serialize(request),
+  };
+  const apiResult = await got.post<null>(`${basePath}/participants/${participant}/accounts/${account}`, requestOpts);
+  return handleResult<null>(apiResult, allOpts.throwMlError);
+}
 
 export default {
   getParticipants,
@@ -182,4 +236,5 @@ export default {
   getParticipantAccounts,
   createParticipant,
   postInitialPositionAndLimits,
+  fundsInOut,
 }
