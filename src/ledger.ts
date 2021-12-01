@@ -1,4 +1,4 @@
-import got from 'got';
+import got, { OptionsOfJSONResponseBody } from 'got';
 import {
   MlApiResponse,
   REQUEST_OPTS,
@@ -7,13 +7,17 @@ import {
   defaultOpts,
   handleOptions,
   handleResult,
+  serialize,
 } from './shared';
 import {
   LedgerParticipant,
   ParticipantLimit,
   AccountWithPosition,
   FspName,
+  Currency,
+  Limit,
 } from './types';
+import { strict as assert } from 'assert';
 
 export async function getParticipants(
   basePath: string,
@@ -88,8 +92,94 @@ export async function getParticipantAccounts(
   return handleResult<AccountWithPosition[]>(result, allOpts.throwMlError);
 }
 
+export async function createParticipant(
+  basePath: string,
+  name: FspName,
+): Promise<null>;
+
+export async function createParticipant(
+  basePath: string,
+  name: FspName,
+  opts: OptionsOfThrowMlError,
+): Promise<null>;
+
+export async function createParticipant(
+  basePath: string,
+  name: FspName,
+  opts: Options,
+): Promise<MlApiResponse<null>>;
+
+export async function createParticipant(
+  basePath: string,
+  name: FspName,
+  opts: OptionsOfThrowMlError | Options = defaultOpts,
+): Promise<null | MlApiResponse<null>> {
+  const allOpts = handleOptions(opts);
+  const re = /^[0-9a-zA-Z]{2,30}$/;
+  assert(re.test(name), `Participant name must match ${re}`);
+  const requestOpts: OptionsOfJSONResponseBody = {
+    ...REQUEST_OPTS,
+    body: serialize({
+      name,
+    }),
+  };
+  const apiResult = await got.post<null>(`${basePath}/participants`, requestOpts);
+  return handleResult<null>(apiResult, allOpts.throwMlError);
+}
+
+
+export async function postInitialPositionAndLimits(
+  basePath: string,
+  name: FspName,
+  currency: Currency,
+  limit: Limit,
+  initialPosition: number,
+): Promise<null>;
+
+export async function postInitialPositionAndLimits(
+  basePath: string,
+  name: FspName,
+  currency: Currency,
+  limit: Limit,
+  initialPosition: number,
+  opts: OptionsOfThrowMlError,
+): Promise<null>;
+
+export async function postInitialPositionAndLimits(
+  basePath: string,
+  name: FspName,
+  currency: Currency,
+  limit: Limit,
+  initialPosition: number,
+  opts: Options,
+): Promise<MlApiResponse<null>>;
+
+export async function postInitialPositionAndLimits(
+  basePath: string,
+  name: FspName,
+  currency: Currency,
+  limit: Limit,
+  initialPosition: number,
+  opts: OptionsOfThrowMlError | Options = defaultOpts,
+): Promise<null | MlApiResponse<null>> {
+  const allOpts = handleOptions(opts);
+  const requestOpts: OptionsOfJSONResponseBody = {
+    ...REQUEST_OPTS,
+    body: serialize({
+      currency,
+      limit,
+      initialPosition,
+    }),
+  };
+  const apiResult = await got.post<null>(`${basePath}/participants/${name}/initialPositionAndLimits`, requestOpts);
+  return handleResult<null>(apiResult, allOpts.throwMlError);
+}
+
+
 export default {
   getParticipants,
   getParticipantsLimits,
   getParticipantAccounts,
+  createParticipant,
+  postInitialPositionAndLimits,
 }
